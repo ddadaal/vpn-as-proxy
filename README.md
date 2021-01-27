@@ -30,7 +30,10 @@ File `example.env` is provided using PKU VPN as an example.
 
 3. Run `docker-compose up` (add `-d` to run in the background)
 4. A proxy is listening at the specified port. Set the proxy server of your apps to `http://localhost:{PORT}`
-5. The container should keep running to be able to function. Press `Ctrl-C` or use `docker kill {image id}` to stop the container.
+5. The container should keep running to be able to function. 
+6. Press `Ctrl-C` or use `docker kill {container id}`(container id can be obtained by `docker ps`) to stop the container.
+
+It is tested that the VPN connected in one container are isolated with other containers, i.e. the other containers are not connected to the VPN connected by one container.
 
 # Implementation
 
