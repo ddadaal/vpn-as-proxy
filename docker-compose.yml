@@ -1,0 +1,16 @@
+version: "3"
+services:
+  proxy:
+    image: vpnproxy
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8888:8888
+    # https://stackoverflow.com/questions/30547484/calling-openconnect-vpn-client-in-docker-container-shows-tunsetiff-failed-opera
+    cap_add: 
+      - NET_ADMIN
+    command: bash -c "
+        tinyproxy 
+        && echo \"${PWD}\" | openconnect vpn.pku.edu.cn -u \"${STUID}\" --protocol=pulse
+      "
