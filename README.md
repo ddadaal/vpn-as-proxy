@@ -15,7 +15,8 @@ Set the proxy of your application to `http://localhost:{port}`, and all the HTTP
 
 # How to use?
 
-1. Create a `.env` file under the cloned repository with its ID and password in the following format:
+1. Clone the repo
+2. Create a `.env` file under the cloned folder with the following configurations:
 
 ```env
 USER=username
@@ -27,9 +28,9 @@ PORT=the listening port in your host
 
 File `example.env` is provided using PKU VPN as an example.
 
-2. Run `docker-compose up`
-3. A proxy is listening at the specified port. Set the proxy server of your apps to `http://localhost:{PORT}`
-4. The container should keep running to be able to function. Press `Ctrl-C` to stop the container.
+3. Run `docker-compose up` (add `-d` to run in the background)
+4. A proxy is listening at the specified port. Set the proxy server of your apps to `http://localhost:{PORT}`
+5. The container should keep running to be able to function. Press `Ctrl-C` or use `docker kill {image id}` to stop the container.
 
 # Implementation
 
