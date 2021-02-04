@@ -1,10 +1,14 @@
 # Use VPN as a HTTP proxy server
 
+[中文](README.cn.md)
+
 # Motivation
 
 VPN is used to access internal resources that can only be obtained in the internal network of your corporation. However, connecting to VPN in your device makes all network traffic forwarded to the VPN, which adds network latency and affects speed for requests that can be accessed without VPN. 
 
-Most applications now support proxy. A proxy forwards incoming traffic to a upstream server. Therefore, if a proxy is connected to VPN, only the requests that are forwarded to the proxy will go the VPN, which addresses the original issue.
+Most applications now support proxy. If a proxy is set for an app, all traffic from the app will go to the proxy instead of go directly to the Internet. The proxy will then sends the traffic to its real destinations.
+
+Therefore, if we have a proxy that is connected to VPN, we can only set the proxy of the apps that needs internal resources. Only the traffic of these apps will go to the VPN. The apps whose proxy is not set will NOT go to the VPN, which addresses our original issue.
 
 This project creates a docker container that does exactly what is mentioned above. This container does 2 things:
 
@@ -39,13 +43,13 @@ If not, you can do the followings to experiment and find the command to connect 
 2. Run `docker run -it --cap-add=NET_ADMIN vpnproxy` to start a container
 3. Try connecting to your VPN with `openconnect` **in one line**
 4. Append the command after `CMD=` in your `.env` file
-5. Submit a pull request to add your organization's config in the repo!
+5. (Optional) Submit a pull request to add your organization's config in the repo!
 
 Note: 
 
 - The command itself should be able to your VPN without any intervention (like inputting credentials), so all your configs, including credentials, should be included in the command
+- The CMD will be wrapped inside a pair of single quotes to run, so use double quotes to wrap your strings in your command, and escape your command if necessary
 - If `openconnect` does not exit, the connection is already successful. Some errors can be ignored in this case.
-- The CMD will be wrapped inside a pair of single quotes to run, so escape your command if necessary
 
 ## Run
 
