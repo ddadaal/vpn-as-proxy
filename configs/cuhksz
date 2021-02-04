@@ -1,0 +1,6 @@
+# Replace ... with ...
+# {GROUP}: CUHK(SZ) or CUHK(SZ)-local
+# {USER}: Usually it's your Student's ID / Staff ID
+# {PWD}: The password you set for the unified identity authentication of CUHK(SZ)
+
+printf "{GROUP}\\n{USER}\\n{PWD}" | openconnect vpn.cuhk.edu.cn --protocol=anyconnect

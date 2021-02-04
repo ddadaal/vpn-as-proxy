@@ -1,0 +1,5 @@
+# Replace ... with ...
+# {PWD}: Your ITS password
+# {USER}: Your ITS username, usually student id
+
+echo "{PWD}" | openconnect vpn.pku.edu.cn -u "{USER}" --protocol=pulse
