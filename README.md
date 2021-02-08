@@ -4,6 +4,8 @@
 
 # Motivation
 
+![Network flow](images/vpn-as-proxy-en.png)
+
 VPN is used to access internal resources that can only be obtained in the internal network of your corporation. However, connecting to VPN in your device makes all network traffic forwarded to the VPN, which adds network latency and affects speed for requests that can be accessed without VPN. 
 
 Most applications now support proxy. If a proxy is set for an app, all traffic from the app will go to the proxy instead of go directly to the Internet. The proxy will then sends the traffic to its real destinations.
@@ -16,6 +18,8 @@ This project creates a docker container that does exactly what is mentioned abov
 - listens to a port, from which the container receives incoming HTTP requests and "re-sends" them
 
 Set the proxy of your application to `http://localhost:{port}`, and all the HTTP requests from the app will go to the container. The container just simply resends the requests without any modifications. Since the container is connected to a VPN, any network traffic coming from the container is tunneled to your VPN, and as a result, the application is now able to access internal resource.
+
+Check out [the related article on my blog](https://ddadaal.me/articles/vpn-as-http-proxy), which explains VPN and proxy solution in detail.
 
 # How to use?
 
@@ -67,4 +71,5 @@ It is tested that the VPN connected in one container are isolated with other con
 - Base image: `debian:buster-slim`
 - VPN client: `openconnect`
 - Proxy: `tinyproxy`
+
 
