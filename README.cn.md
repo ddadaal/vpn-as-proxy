@@ -55,7 +55,7 @@ CMD=在容器内连接VPN的命令
 1. 运行`docker-compose up` （加`-d`后台运行）
 2. 把需要走VPN的程序的代理设置为`http://localhost:{PORT}`（{PORT}和`.env`文件里设置的PORT值一致）
 3. 容器需要保持运行
-4. 使用`Ctrl-C`或者使用`docker kill {container id}`(container id可以通过`docker ps -a`获得)来关闭代理
+4. 使用`Ctrl-C`或者使用`docker kill vpnproxy`来关闭代理
 q
 经测试，在一个容器里连接的VPN不会影响其他容器和主机的网络连接。
 
@@ -145,8 +145,6 @@ VPN可以被用来在外网访问内网资源。但是，一旦连接VPN，系�
 由于这个容器整体连接到了VPN，所以由这个容器发出的流量都会走VPN。所以，我们只需要设置我们需要走VPN的程序的代理程序为`http://localhost:{PORT}`，这样这些程序的流量就会走这个代理，然后走VPN，这样就可以访问内部资源了。
 
 请查看[我博客上的相关文章](https://ddadaal.me/articles/vpn-as-http-proxy)，对VPN、代理以及本方案进行了更详细的介绍。
-
-
 
 # 实现
 

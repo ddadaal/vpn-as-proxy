@@ -58,7 +58,7 @@ After the `.env` file is configured, you can run the proxy:
 1. Run `docker-compose up` (add `-d` to run in the background) to start the container
 2. Set the proxy server of your apps to `http://localhost:{PORT}` (the PORT you set in the `.env` file)
 3. The container should keep running for the proxy to work.
-4. Press `Ctrl-C` or use `docker kill {container id}`(container id can be obtained by `docker ps -a`) to stop the container.
+4. Press `Ctrl-C` or use `docker kill vpnproxy` to stop the container.
 
 It is tested that the VPN connected in one container are isolated with other containers, i.e. the other containers are not connected to the VPN connected by one container.
 
