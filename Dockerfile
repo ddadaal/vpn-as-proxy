@@ -4,10 +4,9 @@ FROM debian:buster-slim
 COPY ./apt-sources.list /etc/apt/sources.list
 
 # Update the sources
-RUN apt update 
-
 # Install openconnect from buster-backports
-RUN apt install -y -t buster-backports openconnect tinyproxy
+# And ssh
+RUN apt update && apt install -y -t buster-backports openconnect tinyproxy ssh
 
 # Make tinyproxy accept requests from all hosts
 RUN sed -i "s/^Allow/#Allow/g" /etc/tinyproxy/tinyproxy.conf

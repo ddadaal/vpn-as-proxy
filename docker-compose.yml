@@ -2,6 +2,7 @@ version: "3"
 services:
   proxy:
     image: vpnproxy
+    container_name: vpnproxy
     environment: 
       - PORT=8888
     build:
@@ -12,7 +13,10 @@ services:
     # https://stackoverflow.com/questions/30547484/calling-openconnect-vpn-client-in-docker-container-shows-tunsetiff-failed-opera
     cap_add: 
       - NET_ADMIN
+    volumes:
+      - ${HOME}/.ssh:/root/.ssh
     command: bash -c '
+        chmod 400 /root/.ssh/id_rsa &&
         tinyproxy &&
         ${CMD}
       '
