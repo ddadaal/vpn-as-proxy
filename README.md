@@ -14,7 +14,7 @@ Also support SSH!
 	- [Browsers](#browsers)
 - [SSH](#ssh)
 	- [1. Make SSH client use this proxy](#1-make-ssh-client-use-this-proxy)
-	- [2. Using SSH client in this image.](#2-using-ssh-client-in-this-image)
+	- [2. Using SSH client in this image](#2-using-ssh-client-in-this-image)
 - [Motivation](#motivation)
 - [Implementation](#implementation)
 
@@ -122,22 +122,22 @@ There are mainly 2 ways to use SSH with proxy.
 
 We can utilize SSH client's `ProxyCommand` config to use HTTP proxy.
 
-Please checkout this stackoverflow question (https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy). Replace `PROXYHOST:PROXYPORT` with the address and port of this proxy server. Mainly the following steps is required:
+Please checkout this stackoverflow question (https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy). Replace `PROXYHOST:PROXYPORT` with the address and port of this proxy server. The configurations mainly include the following steps:
 
 1. Install needed programs
    - In Arch Linux the programs are `openbsd-netcat` and `connect`. It differs in different distributions and OSs, so please check out the stackoverflow question above.
-2. Add the following content into `~/.ssh/config`
+2. Add the following content into `~/.ssh/config`, replacing the content in <> accordingly
 
 ```
 Host <The address to be connected with proxy>
-    ProxyCommand          nc -X connect -x <proxy server address>:<proxy server port> %h %p
+    ProxyCommand          nc -X connect -x localhost:<proxy server port in .env> %h %p
 ```
 
-If you encounter any error, check out other answers and comments.
+If you encounter any error, check out other answers and comments in that stackoverflow question.
 
 This is the recommended approach.
 
-## 2. Using SSH client in this image.
+## 2. Using SSH client in this image
 
 SSH is installed in the image. When the container is running, you can access the container by starting a `/bin/bash` process. The `~/.ssh` directory is mapped to `/root/.ssh` of the container, so the container shares SSH key pairs with the host.
 

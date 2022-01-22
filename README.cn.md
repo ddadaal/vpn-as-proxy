@@ -124,11 +124,11 @@ export HTTPS_PROXY=$HTTP_PROXY
 
 1. 在机器上安装需要的程序
    - 在ArchLinux上为`openbsd-netcat`和`connect`。在不同的发行版上程序包名可能不同，这是Arch Linux下的包名。如果是其他操作系统，请参考上述提到的StackOverflow的问题
-2. 在`~/.ssh/config`中填写如下内容
+2. 在`~/.ssh/config`中填写如下内容，并按您的需要和真实配置替换<>中的内容
 
 ```
 Host <需要使用代理进行连接的地址>
-    ProxyCommand          nc -X connect -x <代理服务器地址>:<代理服务器端口> %h %p
+    ProxyCommand          nc -X connect -x localhost:<.env中配置的代理服务器端口> %h %p
 ```
 
 如果SSH连接时遇到了问题，请看这个回答的评论部分。
