@@ -8,11 +8,13 @@ Also support SSH!
 - [How to use?](#how-to-use)
 	- [1. Configuration](#1-configuration)
 	- [2. Run Proxy Server](#2-run-proxy-server)
-	- [3. Set proxy server for apps](#3-set-proxy-server-for-apps)
-		- [git](#git)
-		- [Most CLI programs](#most-cli-programs)
-		- [Browsers](#browsers)
-		- [SSH](#ssh)
+- [Set proxy server for apps](#set-proxy-server-for-apps)
+	- [git](#git)
+	- [Most CLI programs](#most-cli-programs)
+	- [Browsers](#browsers)
+- [SSH](#ssh)
+	- [1. Make SSH client use this proxy](#1-make-ssh-client-use-this-proxy)
+	- [2. Using SSH client in this image.](#2-using-ssh-client-in-this-image)
 - [Motivation](#motivation)
 - [Implementation](#implementation)
 
@@ -62,13 +64,13 @@ After the `.env` file is configured, you can run the proxy:
 
 It is tested that the VPN connected in one container are isolated with other containers, i.e. the other containers are not connected to the VPN connected by one container.
 
-## 3. Set proxy server for apps
+# Set proxy server for apps
 
 Set the HTTP/HTTPS proxy server of apps to `http://localhost:{PORT}` (the PORT you set in the `.env` file)
 
 The followings are some examples. All examples use 8888 as the port number. Change it if needed.
 
-### git
+## git
 
 ```bash
 # Only for the current repo
@@ -76,7 +78,7 @@ git config http.proxy http://localhost:8888
 git config https.proxy http://localhost:8888
 ```
 
-### Most CLI programs
+## Most CLI programs
 
 ```powershell
 # Windows PowerShell
@@ -90,7 +92,7 @@ export HTTP_PROXY=http://localhost:8888
 export HTTPS_PROXY=$HTTP_PROXY
 ```
 
-### Browsers
+## Browsers
 
 Install **Proxy SwitchyOmega**（[Chrome Web Store](https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif)）Extension, and configure it as follows:
 
@@ -112,7 +114,30 @@ Install **Proxy SwitchyOmega**（[Chrome Web Store](https://chrome.google.com/we
 
 Completed. When accessing the URLs set in the step 3, the browser proxies the traffic to the proxy. 
 
-### SSH
+# SSH
+
+There are mainly 2 ways to use SSH with proxy.
+
+## 1. Make SSH client use this proxy
+
+We can utilize SSH client's `ProxyCommand` config to use HTTP proxy.
+
+Please checkout this stackoverflow question (https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy). Replace `PROXYHOST:PROXYPORT` with the address and port of this proxy server. Mainly the following steps is required:
+
+1. Install needed programs
+   - In Arch Linux the programs are `openbsd-netcat` and `connect`. It differs in different distributions and OSs, so please check out the stackoverflow question above.
+2. Add the following content into `~/.ssh/config`
+
+```
+Host <The address to be connected with proxy>
+    ProxyCommand          nc -X connect -x <proxy server address>:<proxy server port> %h %p
+```
+
+If you encounter any error, check out other answers and comments.
+
+This is the recommended approach.
+
+## 2. Using SSH client in this image.
 
 SSH is installed in the image. When the container is running, you can access the container by starting a `/bin/bash` process. The `~/.ssh` directory is mapped to `/root/.ssh` of the container, so the container shares SSH key pairs with the host.
 

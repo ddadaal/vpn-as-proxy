@@ -6,11 +6,13 @@
 - [如何使用？](#如何使用)
 	- [1. 配置](#1-配置)
 	- [2. 运行代理](#2-运行代理)
-	- [3. 设置代理服务器](#3-设置代理服务器)
-		- [git](#git)
-		- [大多数命令行程序](#大多数命令行程序)
-		- [浏览器](#浏览器)
-		- [SSH](#ssh)
+- [设置代理服务器](#设置代理服务器)
+	- [git](#git)
+	- [大多数命令行程序](#大多数命令行程序)
+	- [浏览器](#浏览器)
+- [SSH](#ssh)
+	- [1. 配置SSH客户端使其使用本代理](#1-配置ssh客户端使其使用本代理)
+	- [2. 使用镜像中的SSH客户端](#2-使用镜像中的ssh客户端)
 - [原理](#原理)
 - [实现](#实现)
 
@@ -59,13 +61,13 @@ CMD=在容器内连接VPN的命令
 q
 经测试，在一个容器里连接的VPN不会影响其他容器和主机的网络连接。
 
-## 3. 设置代理服务器
+# 设置代理服务器
 
 代理服务器跑起来之后，给需要走内网的应用设置HTTP和HTTPS代理到`http://localhost:{PORT}`（`{PORT}`为`.env`中设置的值，默认为8888）。
 
 一些常见设置（下面均使用8888为端口，如果为其他端口请自行更改）.
 
-### git
+## git
 
 ```bash
 # 只修改当前repo
@@ -73,7 +75,7 @@ git config http.proxy http://localhost:8888
 git config https.proxy http://localhost:8888
 ```
 
-### 大多数命令行程序
+## 大多数命令行程序
 
 ```powershell
 # Windows PowerShell
@@ -87,7 +89,7 @@ export HTTP_PROXY=http://localhost:8888
 export HTTPS_PROXY=$HTTP_PROXY
 ```
 
-### 浏览器
+## 浏览器
 
 使用**Proxy SwitchyOmega**（[Chrome Web Store](https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif)）扩展，然后按照以下操作：
 
@@ -109,7 +111,31 @@ export HTTPS_PROXY=$HTTP_PROXY
 
 完成。之后访问第三步中设置的URL时将会自动走HTTP代理，其他的将会走系统代理。
 
-### SSH
+# SSH
+
+主要有两种方式可以使用SSH。
+
+## 1. 配置SSH客户端使其使用本代理
+
+我们可以使用SSH客户端的`ProxyCommand`配置。
+
+请参考这个StackOverflow的问题(https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy)配置SSH客户端。将其中的`PROXYHOST:PROXYPORT`替换为这个代理服务器的地址和端口。具体来说，有如下几步：
+
+
+1. 在机器上安装需要的程序
+   - 在ArchLinux上为`openbsd-netcat`和`connect`。在不同的发行版上程序包名可能不同，这是Arch Linux下的包名。如果是其他操作系统，请参考上述提到的StackOverflow的问题
+2. 在`~/.ssh/config`中填写如下内容
+
+```
+Host <需要使用代理进行连接的地址>
+    ProxyCommand          nc -X connect -x <代理服务器地址>:<代理服务器端口> %h %p
+```
+
+如果SSH连接时遇到了问题，请看这个回答的评论部分。
+
+这是推荐的方法。
+
+## 2. 使用镜像中的SSH客户端
 
 镜像中默认安装了SSH，接下来只需要进入容器的`bash`中，即可通过SSH链接到内网机器了。在容器启动时将主机的`~/.ssh`目录映射到了容器的`/root/.ssh`目录，主机和容器共享SSH密钥对。所以主机能免密登录的机器，容器也可以。
 
