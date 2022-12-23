@@ -1,7 +1,7 @@
 version: "3"
 services:
   proxy:
-    image: ghcr.io/ddadaal/vpn-as-http-proxy
+    image: ghcr.io/ddadaal/vpn-as-http-proxy:master
     container_name: vpnproxy
     environment: 
       - PORT=8888
