@@ -13,7 +13,6 @@ env:
 
 jobs:
   build-images:
-    needs: test
     runs-on: ubuntu-latest
 
     permissions:
