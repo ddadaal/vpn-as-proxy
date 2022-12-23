@@ -38,8 +38,8 @@ CMD=在容器内连接VPN的命令
 
 如果`configs`目录下没有您的组织，您可以按照以下步骤尝试找到连接您的VPN的命令：
 
-1. 运行`docker-compose build`构建镜像
-2. 运行`docker run -it --cap-add=NET_ADMIN vpnproxy`启动一个容器
+1. 运行`docker compose build`构建镜像
+2. 运行`docker run -it --cap-add=NET_ADMIN ghcr.io/ddadaal/vpn-as-http-proxy`启动一个容器
 3. 在容器中，借助`openconnect`程序，尝试使用**一行**命令连接到您的VPN
 4. 把这个命令添加到`.env`文件的`CMD=`之后
 5. （可选）提交一个PR，把您的组织的配置文件提交到`configs`目录下！
@@ -54,7 +54,7 @@ CMD=在容器内连接VPN的命令
 
 在`.env`文件配置好之后，按以下方式运行代理：
 
-1. 运行`docker-compose up` （加`-d`后台运行）
+1. 运行`docker compose up` （加`-d`后台运行）
 2. 把需要走VPN的程序的代理设置为`http://localhost:{PORT}`（{PORT}和`.env`文件里设置的PORT值一致）
 3. 容器需要保持运行
 4. 使用`Ctrl-C`或者使用`docker kill vpnproxy`来关闭代理

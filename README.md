@@ -41,8 +41,8 @@ If your organization is included:
 
 If not, you can do the followings to experiment and find the command to connect to VPN:
 
-1. Run `docker-compose build` to build the image
-2. Run `docker run -it --cap-add=NET_ADMIN vpnproxy` to start a container
+1. Run `docker compose build` to build the image
+2. Run `docker run -it --cap-add=NET_ADMIN ghcr.io/ddadaal/vpn-as-http-proxy` to start a container
 3. Try connecting to your VPN with `openconnect` **in one line**
 4. Append the command after `CMD=` in your `.env` file
 5. (Optional) Submit a pull request to add your organization's config in the repo!
@@ -57,10 +57,10 @@ Note:
 
 After the `.env` file is configured, you can run the proxy:
 
-1. Run `docker-compose up` (add `-d` to run in the background) to start the container
+1. Run `docker compose up` (add `-d` to run in the background) to start the container
 2. Set the proxy server of your apps to `http://localhost:{PORT}` (the PORT you set in the `.env` file)
 3. The container should keep running for the proxy to work.
-4. Press `Ctrl-C` or use `docker kill vpnproxy` to stop the container.
+4. Press `Ctrl-C` or use `docker compose down` to stop the container.
 
 It is tested that the VPN connected in one container are isolated with other containers, i.e. the other containers are not connected to the VPN connected by one container.
 
