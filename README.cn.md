@@ -119,23 +119,24 @@ export HTTPS_PROXY=$HTTP_PROXY
 
 ## 1. 配置SSH客户端使其使用本代理
 
-我们可以使用SSH客户端的`ProxyCommand`配置。
+这是推荐的方法。
 
-请参考这个StackOverflow的问题(https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy)配置SSH客户端。将其中的`PROXYHOST:PROXYPORT`替换为这个代理服务器的地址和端口。具体来说，有如下几步：
-
+我们可以使用SSH客户端的`ProxyCommand`配置。这个配置好了之后，所有使用本地OpenSSH客户端的应用都可以使用代理访问服务器，其中还包括VSCode的Remote SSH功能！
 
 1. 在机器上安装需要的程序
-   - 在ArchLinux上为`openbsd-netcat`和`connect`。在不同的发行版上程序包名可能不同，这是Arch Linux下的包名。如果是其他操作系统，请参考上述提到的StackOverflow的问题
+   - 在Arch Linux上为`openbsd-netcat`和`connect`。在不同的发行版上程序包名可能不同，这是Arch Linux下的包名。如果是其他操作系统，请参考下面的StackOverflow的问题
+   - 在Windows上我们需要`connect.exe`。这个应用程序包含在`MinGW64`上，`Git for Windows`将会自动安装`MinGW`。所以你应该可以在Git安装目录的`mingw64/bin`目录下找到这个应用程序
 2. 在`~/.ssh/config`中填写如下内容，并按您的需要和真实配置替换<>中的内容
 
 ```
 Host <需要使用代理进行连接的地址>
-    ProxyCommand          nc -X connect -x localhost:<.env中配置的代理服务器端口> %h %p
+    ProxyCommand          nc -X connect -x localhost:{.env中配置的代理服务器端口} %h %p
+	# Windows用户请参考下列地址
+	# ProxyCommand {connect.exe的路径，如果需要的话加上引号} -H localhost:{.env中配置的代理服务器端口} %h %p
 ```
 
-如果SSH连接时遇到了问题，请看这个回答的评论部分。
+如果SSH连接时遇到了问题，请参考这个StackOverflow的问题(https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy)。
 
-这是推荐的方法。
 
 ## 2. 使用镜像中的SSH客户端
 

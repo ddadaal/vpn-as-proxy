@@ -122,22 +122,23 @@ There are mainly 2 ways to use SSH with proxy.
 
 ## 1. Make SSH client use this proxy
 
-We can utilize SSH client's `ProxyCommand` config to use HTTP proxy.
+This is the recommended approach.
 
-Please checkout this stackoverflow question (https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy). Replace `PROXYHOST:PROXYPORT` with the address and port of this proxy server. The configurations mainly include the following steps:
+We can utilize SSH client's `ProxyCommand` config to use HTTP proxy. With this setup, any client that uses local openssh client will be able to connect to the server through proxy, which also includes VSCode Remote SSH.
 
 1. Install needed programs
    - In Arch Linux the programs are `openbsd-netcat` and `connect`. It differs in different distributions and OSs, so please check out the stackoverflow question above.
-2. Add the following content into `~/.ssh/config`, replacing the content in <> accordingly
+   - In Windows, we need `connect.exe` which is installed alongside `MinGW64`, which is installed with `Git for Windows`. Therefore, you may find the `connect.exe` under the `mingw64/bin` folder under git's installation path
+2. Add the following content into `~/.ssh/config`, replacing the content in {} accordingly
 
 ```
 Host <The address to be connected with proxy>
-    ProxyCommand          nc -X connect -x localhost:<proxy server port in .env> %h %p
+    ProxyCommand          nc -X connect -x localhost:{proxy server port in .env} %h %p
+	# Windows user use the following path
+	# ProxyCommand {connect.exe path, quoted if necessary} -H localhost:{proxy server port in .env} %h %p
 ```
 
-If you encounter any error, check out other answers and comments in that stackoverflow question.
-
-This is the recommended approach.
+If you encounter any error, check out other answers and comments in this stackoverflow question (https://stackoverflow.com/questions/19161960/connect-with-ssh-through-a-proxy).
 
 ## 2. Using SSH client in this image
 
