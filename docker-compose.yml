@@ -5,6 +5,8 @@ services:
     container_name: vpnproxy
     environment: 
       - PORT=8888
+      - PF_DEST=${PF_DEST}
+      - PF_PORT=${PF_PORT}
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -15,8 +17,3 @@ services:
       - NET_ADMIN
     volumes:
       - ${HOME}/.ssh:/root/.ssh
-    command: bash -c '
-        chmod 400 /root/.ssh/id_rsa &&
-        tinyproxy &&
-        ${CMD}
-      '
