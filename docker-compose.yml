@@ -4,19 +4,17 @@ services:
     image: ghcr.io/ddadaal/vpn-as-http-proxy:master
     container_name: vpnproxy
     environment: 
+      - CMD=${CMD}
       - PORT=8888
+      - PF_DEST=${PF_DEST}
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - ${PORT}:8888
+      - ${PF_PORT}:18889
     # https://stackoverflow.com/questions/30547484/calling-openconnect-vpn-client-in-docker-container-shows-tunsetiff-failed-opera
     cap_add: 
       - NET_ADMIN
     volumes:
       - ${HOME}/.ssh:/root/.ssh
-    command: bash -c '
-        chmod 400 /root/.ssh/id_rsa &&
-        tinyproxy &&
-        ${CMD}
-      '
