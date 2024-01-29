@@ -1,20 +1,21 @@
-# Use VPN as a HTTP proxy server
+# Use VPN as a proxy server
 
 [中文](README.cn.md)
 
-Also support SSH!
+Using docker, this project converts VPN connecting into a proxy that can proxy HTTP/HTTPS, SSH or any data in Windows, Linux, and macOS!
 
-- [Use VPN as a HTTP proxy server](#use-vpn-as-a-http-proxy-server)
+- [Use VPN as a proxy server](#use-vpn-as-a-proxy-server)
 - [How to use?](#how-to-use)
 	- [1. Configuration](#1-configuration)
 	- [2. Run Proxy Server](#2-run-proxy-server)
-- [Set proxy server for apps](#set-proxy-server-for-apps)
+- [Set HTTP proxy server for apps](#set-http-proxy-server-for-apps)
 	- [git](#git)
 	- [Most CLI programs](#most-cli-programs)
 	- [Browsers](#browsers)
 - [SSH](#ssh)
 	- [1. Make SSH client use this proxy](#1-make-ssh-client-use-this-proxy)
 	- [2. Using SSH client in this image](#2-using-ssh-client-in-this-image)
+- [Port forwarding](#port-forwarding)
 - [Motivation](#motivation)
 - [Implementation](#implementation)
 
@@ -28,8 +29,20 @@ Also support SSH!
 3. Modify the `.env` file as follows:
 
 ```env
-PORT=the listening port in your host, for example 8888
-CMD=the command to connect to your VPN using openconnect
+# The command to connect to the VPN
+CMD=
+
+# HTTP Proxy port
+PORT=8888
+
+# Port forward
+# The port in the host to listen to
+# Even if you don't use port forwarding, you have to set the port here
+PF_PORT=18889
+
+# The destination for the port forwarding
+# If you don't use port forwarding, leave this commented out
+# PF_DEST=
 ```
 
 Example CMD values of several universities are under the `configs` file. 
@@ -66,7 +79,7 @@ After the `.env` file is configured, you can run the proxy:
 
 It is tested that the VPN connected in one container are isolated with other containers, i.e. the other containers are not connected to the VPN connected by one container.
 
-# Set proxy server for apps
+# Set HTTP proxy server for apps
 
 Set the HTTP/HTTPS proxy server of apps to `http://localhost:{PORT}` (the PORT you set in the `.env` file)
 
@@ -157,6 +170,22 @@ pwsh bash.sh
 # 2. Connect by SSH
 ssh username@ip
 ```
+
+# Port forwarding
+
+You can use this proxy to forward a local port to an destination. You can use this feature in non-HTTP scenarios like Windows Remote Desktop.
+
+To configure it, set the following envs in `.env`
+
+```env
+# The port in the host to listen to
+PF_PORT=18889
+
+# The destination for the port forwarding
+PF_DEST=10.2.3.4:10203
+```
+
+When the proxy is up, all data to `localhost:18889` will be forwarded to `10.2.3.4:10203`.
 
 # Motivation
 
