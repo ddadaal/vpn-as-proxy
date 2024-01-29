@@ -2,7 +2,11 @@
 
 [中文](README.cn.md)
 
-Using docker, this project converts VPN connecting into a proxy that can proxy HTTP/HTTPS, SSH or any data in Windows, Linux, and macOS!
+Using docker, this project converts VPN connecting into a proxy. 
+
+- Proxy HTTP/HTTPS, SSH
+- Forward any data via port forwarding (like remote desktop)
+- Runs on any platform Docker supports, including Windows, Linux, and macOS!
 
 - [Use VPN as a proxy server](#use-vpn-as-a-proxy-server)
 - [How to use?](#how-to-use)
@@ -182,10 +186,12 @@ To configure it, set the following envs in `.env`
 PF_PORT=18889
 
 # The destination for the port forwarding
-PF_DEST=10.2.3.4:10203
+PF_DEST=10.2.3.4:3389
 ```
 
-When the proxy is up, all data to `localhost:18889` will be forwarded to `10.2.3.4:10203`.
+When the proxy is up, all data to `localhost:18889` will be forwarded to `10.2.3.4:3389`.
+
+For example, if you have a Windows with RDP service running at `10.2.3.4:3389`, you can now use `localhost:18889` to connect to it!
 
 # Motivation
 
