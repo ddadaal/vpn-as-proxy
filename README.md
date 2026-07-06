@@ -154,7 +154,7 @@ Host <The address to be connected with proxy>
     ProxyCommand          nc -X connect -x localhost:{proxy server port in .env} %h %p
 
     # Debian
-	ProxyCommand          connect-proxy -S PROXYHOST:PROXYPORT %h %p
+	ProxyCommand          connect-proxy -H PROXYHOST:PROXYPORT %h %p
 
 	# Windows user use the following path
 	# ProxyCommand {connect.exe path, quoted if necessary} -H localhost:{proxy server port in .env} %h %p
