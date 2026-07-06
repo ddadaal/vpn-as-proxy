@@ -144,13 +144,18 @@ This is the recommended approach.
 We can utilize SSH client's `ProxyCommand` config to use HTTP proxy. With this setup, any client that uses local openssh client will be able to connect to the server through proxy, which also includes VSCode Remote SSH.
 
 1. Install needed programs
-   - In Arch Linux the programs are `openbsd-netcat` and `connect`. It differs in different distributions and OSs, so please check out the stackoverflow question above.
+   - In Arch Linux the programs are `openbsd-netcat` and `connect`. In Debian it's `connect-proxy`. It differs in different distributions and OSs, so please check out the stackoverflow thread above.
    - In Windows, we need `connect.exe` which is installed alongside `MinGW64`, which is installed with `Git for Windows`. Therefore, you may find the `connect.exe` under the `mingw64/bin` folder under git's installation path
 2. Add the following content into `~/.ssh/config`, replacing the content in {} accordingly
 
 ```
 Host <The address to be connected with proxy>
+	# Arch Linux
     ProxyCommand          nc -X connect -x localhost:{proxy server port in .env} %h %p
+
+    # Debian
+	ProxyCommand          connect-proxy -S PROXYHOST:PROXYPORT %h %p
+
 	# Windows user use the following path
 	# ProxyCommand {connect.exe path, quoted if necessary} -H localhost:{proxy server port in .env} %h %p
 ```
